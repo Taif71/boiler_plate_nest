@@ -1,22 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TodoModule } from './todo/todo.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import * as path from 'path';
-
+import { MongooseModule } from '@nestjs/mongoose';
+import { Cat, CatSchema } from './schemas/cat.schema';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-    type: 'sqlite',
-    autoLoadEntities: true,
-    synchronize: true,
-    database: path.resolve(__dirname, '..', 'db.sqlite')
-  }),
-  TodoModule
+    MongooseModule.forRoot('mongodb://localhost:27017/nestDb'), 
+    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])
+  // TodoModule
 ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+
